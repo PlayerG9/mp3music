@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "mp3music",
+  "name": "youtube video as mp3 downloader",
   "icons": [
     {
       "src": "favicon.ico",
