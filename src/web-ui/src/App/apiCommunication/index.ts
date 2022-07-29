@@ -12,7 +12,7 @@ export function getAudioDownloadLink(uid: string, filename?: string){
 }
 
 export function getDownloadWebsocketUrl(){
-    return `ws://${SERVERADDRESS}/api/download`
+    return `wss://${SERVERADDRESS}/api/download`
 }
 
 function makeRequest(method: string, endpoint: string, data: object){

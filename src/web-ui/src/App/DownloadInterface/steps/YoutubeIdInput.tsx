@@ -30,6 +30,7 @@ export default function YoutubeIdInput(props: StepWidgetProps) {
     return <>
         <input value={props.values.youtubeId ?? ""} onInput={props.handleInput("youtubeId")} />
         <button onClick={nextStep} disabled={!apiCall.isSuccess}>Select</button>
+        {apiCall.isLoading && <p>Verifying...</p>}
         <div>{apiCall.data?.title}</div>
     </>
 }
