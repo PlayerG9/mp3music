@@ -3,8 +3,12 @@ import { VideoMetadata } from "./types"
 export const SERVERADDRESS = 'mp3music-backend.herokuapp.com'
 
 
-export function getAudioDownloadLink(uid: string){
-    return `https://${SERVERADDRESS}/api/mp3file/${uid}`
+export function getAudioDownloadLink(uid: string, filename?: string){
+    const url = new URL(`https://${SERVERADDRESS}/api/mp3file/${uid}`)
+    if(filename){
+        url.searchParams.append("filename", filename)
+    }
+    return url.toString()
 }
 
 export function getDownloadWebsocketUrl(){
