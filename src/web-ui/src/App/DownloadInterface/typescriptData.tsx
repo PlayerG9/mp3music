@@ -8,5 +8,8 @@ export interface StepWidgetProps {
 export interface ValueProps {
     youtubeId?: string,
     fileUid?: string,
-    filename?: string
+    filename?: string,
+
+    title?: string,
+    artist?: string
 }

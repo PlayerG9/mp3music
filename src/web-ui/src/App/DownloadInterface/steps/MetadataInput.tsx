@@ -1,4 +1,5 @@
 import { useQuery } from 'react-query'
+import { fetchVideoMetadata } from '../../apiCommunication'
 import Loader from '../../Components/Loader'
 import { StepWidgetProps } from "../typescriptData"
 
@@ -8,6 +9,14 @@ export default function MetadataInput(props: StepWidgetProps) {
         return <p>Somthing must went wrong</p>
     }
     return <>
+        <div>
+            <span>Title</span>
+            <input onInput={props.handleInput("title")} value={props.values.title}/>
+        </div>
+        <div>
+            <span>Artist</span>
+            <input onInput={props.handleInput("artist")} value={props.values.artist}/>
+        </div>
         <button onClick={props.nextStep}>Next</button>
         <ShowYoutubeMetadata youtubeId={props.values.youtubeId}/>
     </>
@@ -15,13 +24,20 @@ export default function MetadataInput(props: StepWidgetProps) {
 
 
 function ShowYoutubeMetadata(props: {youtubeId: string}){
-    const apiCall = useQuery(['video-metadata'], )
+    const apiCall = useQuery(['video-metadata'], () => fetchVideoMetadata(props.youtubeId))
 
     if(apiCall.isLoading){
         return <Loader/>
     }
+    if(apiCall.isError){
+        return <p>Error</p>
+    }
 
-    return <>
-        {JSON.stringify(apiCall.data)}
-    </>
+    const data = apiCall.data
+
+    return <div>
+        <img src={data?.thumbnail_url} alt="thumbnail" />
+        <p>{data?.artist} - {data?.title}</p>
+        <p>Views: {data?.views}</p>
+    </div>
 }
