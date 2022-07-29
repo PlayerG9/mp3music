@@ -36,8 +36,7 @@ export default class DownloadInterface extends React.Component {
     render(){
         const Widget = STATE2WIDGET[this.state.currentStep]
 
-        const { youtubeId, fileUid } = this.state
-        const values = { youtubeId, fileUid }
+        const values: ValueProps = this.state
 
         return <div className='download-interface'>
             <Widget values={values} handleInput={this.handleInput} nextStep={this.nextStep}/>

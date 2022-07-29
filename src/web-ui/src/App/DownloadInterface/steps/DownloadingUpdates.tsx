@@ -19,8 +19,8 @@ export default function DownloadUpdates(props: StepWidgetProps) {
         websocket.sendJsonMessage({
             youtubeId: props.values.youtubeId,
             metadata: {
-                title: "Title",
-                artist: "Author"
+                title: props.values.title,
+                artist: props.values.artist
             }
         })
     }
@@ -56,7 +56,7 @@ export default function DownloadUpdates(props: StepWidgetProps) {
             </div>
         default:
             return <div>
-                Bad State
+                Bad State: {websocket.readyState}
                 <br/>
                 {JSON.stringify(props)}
             </div>

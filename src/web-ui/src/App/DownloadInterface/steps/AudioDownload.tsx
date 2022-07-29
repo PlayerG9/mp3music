@@ -3,14 +3,16 @@ import { getAudioDownloadLink } from "../../apiCommunication"
 
 
 export default function AudioDownload(props: StepWidgetProps) {
-    const { fileUid } = props.values
+    const { fileUid, filename } = props.values
     if(!fileUid){
-        return <span>Download</span>
+        return <p>Somthing went wrong</p>
     }
-    const downloadUrl = getAudioDownloadLink(fileUid, props.values.filename)
-    return <>
-        <a href={downloadUrl}>
-            Download
-        </a>
-    </>
+    const downloadUrl = getAudioDownloadLink(fileUid, filename)
+    console.log({fileUid, filename, downloadUrl})
+    return <div>
+        <input value={filename} onInput={props.handleInput("filename")} />
+        <p>
+            <a href={downloadUrl}>Download</a>
+        </p>
+    </div>
 }

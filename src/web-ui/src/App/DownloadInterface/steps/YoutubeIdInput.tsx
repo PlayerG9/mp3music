@@ -21,13 +21,15 @@ export default function YoutubeIdInput(props: StepWidgetProps) {
             sendNotification("Invalid Youtube Id")
             return
         }else{
+            props.handleInput("title")(apiCall.data.title)
+            props.handleInput("artist")(apiCall.data.artist)
             props.nextStep()
         }
     }
 
     return <>
         <input value={props.values.youtubeId ?? ""} onInput={props.handleInput("youtubeId")} />
-        <button onClick={nextStep}>Select</button>
-        <div>{JSON.stringify(apiCall.data)}</div>
+        <button onClick={nextStep} disabled={!apiCall.isSuccess}>Select</button>
+        <div>{apiCall.data?.title}</div>
     </>
 }
