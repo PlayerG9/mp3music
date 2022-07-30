@@ -6,8 +6,8 @@ export interface StepWidgetProps {
 
 
 interface inputHandler {
-    (key: string, value: string): void, 
-    (key: string): ((event: any) => void)
+    (key: string): ((event: any) => void),
+    (key: string, value: string): void
 }
 
 

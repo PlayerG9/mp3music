@@ -50,19 +50,17 @@ export default class DownloadInterface extends React.Component {
     }
 
     handleInput(keyWord: string, value?: string) {
-        console.log("I got", value)
         const setState = this.setState.bind(this)
 
-        return function(param: any){
-            if(param.target?.value){
-                setState({
-                    [keyWord]: param.target.value
-                })
-            }else{
-                setState({
-                    [keyWord]: param
-                })
-            }
+        if(value){
+            setState({
+                [keyWord]: value
+            })
+        }
+        return function(event: any){
+            setState({
+                [keyWord]: event.target.value
+            })
         }
     }
 }
