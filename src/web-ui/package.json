@@ -23,6 +23,7 @@
     "predeploy": "npm run build && ./afterBuild.sh",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
+    "secure": "HTTPS=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
