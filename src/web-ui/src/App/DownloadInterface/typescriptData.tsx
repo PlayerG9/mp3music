@@ -1,7 +1,13 @@
 export interface StepWidgetProps {
     values: ValueProps,
     nextStep: () => void,
-    handleInput: (key: string) => (valueOrEvent: any) => void
+    handleInput: inputHandler
+}
+
+
+interface inputHandler {
+    (key: string, value: string): void, 
+    (key: string): ((event: any) => void)
 }
 
 
