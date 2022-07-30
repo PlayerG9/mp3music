@@ -19,3 +19,19 @@ export interface ValueProps {
     title?: string,
     artist?: string
 }
+
+
+export interface DownloadProtocolMessage {
+    info: string,
+    warning: string,
+    error: string,
+    error_class: string,
+    progress: {
+      has: number,
+      max: number
+    },
+    final: {
+      uid: string,
+      filename: string
+    }
+}

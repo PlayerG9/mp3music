@@ -58,9 +58,11 @@ export default class DownloadInterface extends React.Component {
             })
         }
         return function(event: any){
-            setState({
-                [keyWord]: event.target.value
-            })
+            if(event.target?.value){
+                setState({
+                    [keyWord]: event.target.value
+                })
+            }
         }
     }
 }
