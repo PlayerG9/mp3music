@@ -49,7 +49,8 @@ export default class DownloadInterface extends React.Component {
         })
     }
 
-    handleInput(keyWord: string) {
+    handleInput(keyWord: string, value?: string) {
+        console.log("I got", value)
         const setState = this.setState.bind(this)
 
         return function(param: any){

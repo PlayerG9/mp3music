@@ -2,6 +2,7 @@ import { useQuery } from "react-query"
 import { fetchVideoMetadata } from "../../apiCommunication"
 import { sendNotification } from '../../Components/notification'
 import { StepWidgetProps } from "../typescriptData"
+import useFocus from "../../hooks/useFocus"
 
 
 export default function YoutubeIdInput(props: StepWidgetProps) {
@@ -16,13 +17,23 @@ export default function YoutubeIdInput(props: StepWidgetProps) {
         }
     )
 
+    useFocus(() => {
+        console.log("useFocus")
+        console.log(navigator.clipboard)
+        if(navigator.clipboard.readText){
+            navigator.clipboard.readText()
+                .then((text) => props.handleInput("youtubeId", text))
+                .catch(() => sendNotification("failed to load youtubeId"))
+        }
+    })
+
     function nextStep(){
         if(!apiCall.data){
             sendNotification("Invalid Youtube Id")
             return
         }else{
-            props.handleInput("title")(apiCall.data.title)
-            props.handleInput("artist")(apiCall.data.artist)
+            props.handleInput("title", apiCall.data.title)
+            props.handleInput("artist", apiCall.data.artist)
             props.nextStep()
         }
     }
