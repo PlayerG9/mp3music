@@ -18,8 +18,6 @@ export default function YoutubeIdInput(props: StepWidgetProps) {
     )
 
     useFocus(() => {
-        console.log("useFocus")
-        console.log(navigator.clipboard)
         if(navigator.clipboard.readText){
             navigator.clipboard.readText()
                 .then((text) => props.handleInput("youtubeId", text))
@@ -43,5 +41,6 @@ export default function YoutubeIdInput(props: StepWidgetProps) {
         <button onClick={nextStep} disabled={!apiCall.isSuccess}>Select</button>
         {apiCall.isLoading && <p>Verifying...</p>}
         <div>{apiCall.data?.title}</div>
+        <img src={apiCall.data?.thumbnail_url} alt="" />
     </>
 }
