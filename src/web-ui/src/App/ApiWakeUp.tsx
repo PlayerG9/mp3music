@@ -3,13 +3,11 @@ import { helloWorld } from "./apiCommunication"
 import { sendNotification } from "./Components/notification"
 
 export default function ApiWakeUp(){
-    const apiCall = useQuery(['hello-world'], helloWorld, {
-        retry: false
+    useQuery(['hello-world'], helloWorld, {
+        retry: false,
+        onSuccess: () => sendNotification("Server is available"),
+        onError: () => sendNotification("Server seems down")
     })
-
-    if(apiCall.isError){
-        sendNotification("Server seems down")
-    }
 
     return null
 }
