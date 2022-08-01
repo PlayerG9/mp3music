@@ -52,3 +52,23 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* Error Boundary */
+
+.error-boundary {
+    background-color: rgb(255, 0, 0);
+    margin: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    border: 4px solid darkred;
+
+    .text {
+        text-align: center;
+    }
+
+    .error {
+        span {
+            font-weight: bold;
+        }
+    }
+}
