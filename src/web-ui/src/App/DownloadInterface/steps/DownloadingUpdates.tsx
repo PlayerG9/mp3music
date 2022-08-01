@@ -12,12 +12,10 @@ export default function DownloadUpdates(props: StepWidgetProps) {
         onOpen: onOpen,
         onMessage: onMessage,
         onError: onError,
-        onClose: () => props.nextStep()
+        onClose: (event) => {console.log(event); props.nextStep()}
     })
-    const [messages, setMessages] = useState<DownloadProtocolMessage[]>([])
 
     function onOpen(event: any){
-        console.log("onOpen", event)
         websocket.sendJsonMessage({
             youtubeId: props.values.youtubeId,
             metadata: {
@@ -29,27 +27,25 @@ export default function DownloadUpdates(props: StepWidgetProps) {
 
     function onMessage(event: any){
         const data: DownloadProtocolMessage = JSON.parse(event.data)
-        console.log("onMessage", data)
         if(data.final){
-            props.handleInput("fileUid")(data.final.uid)
-            props.handleInput("filename")(data.final.filename)
-            props.nextStep()
-        }
-        const lastIndex = messages.length - 1
-        if(data.progress && messages[lastIndex]?.progress){
-            messages[lastIndex] = data  // update last
-            setMessages(
-                messages
-            )
+            props.handleInput("fileUid", data.final.uid)
+            props.handleInput("filename", data.final.filename)
         }else{
-            setMessages(
-                messages.concat(data)
-            )
+            props.handleInput("messages", (prevValues) => {
+                const messages = prevValues.messages
+                const lastIndex = messages.length - 1
+                if(data.progress && messages[lastIndex]?.progress){
+                    messages[lastIndex] = data  // update last
+                    return messages
+                }else{
+                    console.log(data)
+                    return messages.concat(data)
+                }
+            })
         }
     }
 
     function onError(event: any){
-        console.log("onError", event)
         sendNotification("Error occured")
     }
 
@@ -58,7 +54,7 @@ export default function DownloadUpdates(props: StepWidgetProps) {
             return <Loader/>
         case ReadyState.OPEN:
             return <div>
-                {messages.map((message, key) => <MessageRenderer key={key} {...message}/>)}
+                {props.values.messages.map((message, key) => <MessageRenderer key={key} {...message}/>)}
             </div>
         default:
             return <div>

@@ -26,7 +26,8 @@ export default class DownloadInterface extends React.Component {
     constructor(props: any){
         super(props)
         this.state = {
-            currentStep: 0
+            currentStep: 0,
+            messages: []
         }
         
         this.nextStep = this.nextStep.bind(this)
@@ -38,7 +39,7 @@ export default class DownloadInterface extends React.Component {
 
         if(Widget === undefined){
             return <div>
-                Somethin went wrong
+                Invalid step is displayed
             </div>
         }
 
@@ -55,13 +56,19 @@ export default class DownloadInterface extends React.Component {
         })
     }
 
-    handleInput(keyWord: string, value?: string) {
+    handleInput(keyWord: string, value?: string | ((prevState: ValueProps) => object)) {
         const setState = this.setState.bind(this)
 
         if(value){
-            setState({
-                [keyWord]: value
-            })
+            if(typeof value === 'function'){
+                setState((prev: ValueProps) => ({
+                    [keyWord]: value(prev)
+                }))
+            }else{
+                setState({
+                    [keyWord]: value
+                })
+            }
         }
         return function(event: any){
             if(event.target?.value){

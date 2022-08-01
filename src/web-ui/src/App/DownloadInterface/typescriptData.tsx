@@ -8,6 +8,7 @@ export interface StepWidgetProps {
 interface inputHandler {
     (key: string): ((event: any) => void),
     (key: string, value: string): void
+    (key: string, callback: (prev: ValueProps) => object): void
 }
 
 
@@ -17,7 +18,9 @@ export interface ValueProps {
     filename?: string,
 
     title?: string,
-    artist?: string
+    artist?: string,
+
+    messages: DownloadProtocolMessage[]
 }
 
 
