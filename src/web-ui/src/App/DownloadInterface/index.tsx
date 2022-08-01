@@ -36,6 +36,12 @@ export default class DownloadInterface extends React.Component {
     render(){
         const Widget = STATE2WIDGET[this.state.currentStep]
 
+        if(Widget === undefined){
+            return <div>
+                Somethin went wrong
+            </div>
+        }
+
         const values: ValueProps = this.state
 
         return <div className='download-interface'>
