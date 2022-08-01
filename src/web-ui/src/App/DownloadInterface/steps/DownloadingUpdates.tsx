@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
 import { DownloadProtocolMessage, StepWidgetProps } from "../typescriptData"
 import { getDownloadWebsocketUrl } from "../../apiCommunication"
