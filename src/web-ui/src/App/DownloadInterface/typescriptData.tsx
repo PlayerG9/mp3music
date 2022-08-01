@@ -22,15 +22,15 @@ export interface ValueProps {
 
 
 export interface DownloadProtocolMessage {
-    info: string,
-    warning: string,
-    error: string,
-    error_class: string,
-    progress: {
+    info?: string,
+    warning?: string,
+    error?: string,
+    error_class?: string,
+    progress?: {
       has: number,
       max: number
     },
-    final: {
+    final?: {
       uid: string,
       filename: string
     }

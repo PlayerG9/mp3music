@@ -2,8 +2,9 @@ import { useState } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket'
 import { DownloadProtocolMessage, StepWidgetProps } from "../typescriptData"
 import { getDownloadWebsocketUrl } from "../../apiCommunication"
-import Loader from '../../Components/Loader'
 import { sendNotification } from '../../Components/notification'
+import Loader from '../../Components/Loader'
+import MessageRenderer from '../components/MessageRenderer'
 
 
 export default function DownloadUpdates(props: StepWidgetProps) {
@@ -65,26 +66,5 @@ export default function DownloadUpdates(props: StepWidgetProps) {
                 <br/>
                 {JSON.stringify(props)}
             </div>
-    }
-}
-
-
-export function MessageRenderer(msg: DownloadProtocolMessage){
-    if(msg.info){
-        return <div className='info'>
-            {msg.info}
-        </div>
-    }else if(msg.warning){
-        return <div className='warning'>
-            {msg.warning}
-        </div>
-    }else if(msg.error){
-        return <div className='error'>
-            {msg.error_class}: {msg.error}
-        </div>
-    }else{
-        return <>
-            {JSON.stringify(msg)}
-        </>
     }
 }
