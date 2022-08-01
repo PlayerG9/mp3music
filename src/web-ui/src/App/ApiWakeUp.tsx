@@ -5,6 +5,7 @@ import { sendNotification } from "./Components/notification"
 export default function ApiWakeUp(){
     useQuery(['hello-world'], helloWorld, {
         retry: false,
+        refetchOnWindowFocus: false,
         onSuccess: () => sendNotification("Server is available"),
         onError: () => sendNotification("Server seems down")
     })
