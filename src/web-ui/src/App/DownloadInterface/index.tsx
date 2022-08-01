@@ -1,4 +1,5 @@
 import './style.scss'
+import './components/styles.scss'
 import React from 'react'
 import { ValueProps } from './typescriptData'
 import YoutubeIdInput from './steps/YoutubeIdInput'
