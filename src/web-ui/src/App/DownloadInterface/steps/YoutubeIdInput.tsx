@@ -20,7 +20,7 @@ export default function YoutubeIdInput(props: StepWidgetProps) {
     )
 
     useFocus(() => {
-        if(navigator.clipboard.readText){
+        if((apiCall.isError || !isValidId) && navigator.clipboard.readText){
             navigator.clipboard.readText()
                 .then((text) => props.handleInput("youtubeId", text))
                 .catch(() => sendNotification("failed to load youtubeId"))
