@@ -7,13 +7,14 @@ import useFocus from "../../hooks/useFocus"
 
 export default function YoutubeIdInput(props: StepWidgetProps) {
     const youtubeId = props.values.youtubeId
+    const isValidId = (youtubeId !== undefined && youtubeId.length > 10)
 
     const apiCall = useQuery(
         ['video-metadata'],
         () => fetchVideoMetadata(youtubeId ?? ""),
         {
             cacheTime: 1,
-            enabled: (youtubeId !== undefined && youtubeId.length > 10)
+            enabled: isValidId
         }
     )
 
@@ -40,7 +41,9 @@ export default function YoutubeIdInput(props: StepWidgetProps) {
         <input value={props.values.youtubeId ?? ""} onInput={props.handleInput("youtubeId")} />
         <button onClick={nextStep} disabled={!apiCall.isSuccess}>Select</button>
         {apiCall.isLoading && <p>Verifying...</p>}
-        <div>{apiCall.data?.title}</div>
-        <img src={apiCall.data?.thumbnail_url} alt="" />
+        {isValidId && <>
+            <div>{apiCall.data?.title}</div>
+            <img src={apiCall.data?.thumbnail_url} alt="" />
+        </>}
     </>
 }
