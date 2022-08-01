@@ -3,6 +3,7 @@ import { fetchVideoMetadata } from "../../apiCommunication"
 import { sendNotification } from '../../Components/notification'
 import { StepWidgetProps } from "../typescriptData"
 import useFocus from "../../hooks/useFocus"
+import YoutubeMetadataRenderer from "../components/YoutubeMetadataRenderer"
 
 
 export default function YoutubeIdInput(props: StepWidgetProps) {
@@ -13,7 +14,7 @@ export default function YoutubeIdInput(props: StepWidgetProps) {
         ['video-metadata'],
         () => fetchVideoMetadata(youtubeId ?? ""),
         {
-            cacheTime: 1,
+            refetchInterval: 1,
             enabled: isValidId
         }
     )
@@ -37,13 +38,12 @@ export default function YoutubeIdInput(props: StepWidgetProps) {
         }
     }
 
-    return <>
+    return <div className="youtubeid-input">
         <input value={props.values.youtubeId ?? ""} onInput={props.handleInput("youtubeId")} autoFocus={true} />
+        <br/>
         <button onClick={nextStep} disabled={!apiCall.isSuccess}>Select</button>
         {apiCall.isLoading && <p>Verifying...</p>}
-        {isValidId && <>
-            <div>{apiCall.data?.title}</div>
-            <img src={apiCall.data?.thumbnail_url} alt="" />
-        </>}
-    </>
+        {apiCall.isError && <p>Invalid</p>}
+        {apiCall.isSuccess && <YoutubeMetadataRenderer {...apiCall.data} />}
+    </div>
 }

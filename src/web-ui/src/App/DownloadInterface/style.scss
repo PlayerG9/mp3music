@@ -1,3 +1,64 @@
 .download-interface {
+    max-width: 100%!important;
 
+
+    .video-metadata {
+        display: block;
+        max-width: 100%;
+        margin: 0 auto;
+
+        .title {
+            display: block;
+            text-align: center;
+        }
+
+        .thumbnail {
+            display: block;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+    }
+
+    > .youtubeid-input {
+        > input {
+            display: block;
+            width: 95%;
+            margin: 0 auto;
+            text-align: center;
+        }
+        > button {
+            display: block;
+            width: 70px;
+            margin: 0 auto;
+        }
+        > p {
+            display: block;
+            text-align: center;
+        }
+    }
+
+    > .metadata-input {
+
+        button {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .input-fields {
+            width: 100%;
+
+            // td:first-child {
+
+            // }
+            
+            td:last-child {
+                display: block;
+
+                input {
+                    width: calc(100% - 6px);
+                    padding: 0;
+                }
+            }
+        }
+    }
 }
