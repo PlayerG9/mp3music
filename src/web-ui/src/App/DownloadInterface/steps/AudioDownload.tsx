@@ -11,7 +11,7 @@ export default function AudioDownload(props: StepWidgetProps) {
     const downloadUrl = getAudioDownloadLink(fileUid, filename)
     
     return <div>
-        <input value={filename} onInput={props.handleInput("filename")} />
+        <input value={filename} onInput={props.handleInput("filename")} autoFocus={true} />
         <p>
             <a href={downloadUrl}>Download</a>
         </p>
