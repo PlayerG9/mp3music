@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query'
-import { fetchVideoMetadata } from '../../apiCommunication'
-import Loader from '../../Components/Loader'
+import { fetchVideoMetadata } from '../../../apiCommunication'
+import Loader from '../../../Components/Loader'
 import YoutubeMetadataRenderer from '../components/YoutubeMetadataRenderer'
 import { StepWidgetProps } from "../typescriptData"
 

@@ -1,8 +1,8 @@
 import { useQuery } from "react-query"
-import { fetchVideoMetadata } from "../../apiCommunication"
-import { sendNotification } from '../../Components/notification'
+import { fetchVideoMetadata } from "../../../apiCommunication"
+import { sendNotification } from '../../../Components/notification'
 import { StepWidgetProps } from "../typescriptData"
-import useFocus from "../../hooks/useFocus"
+import useFocus from "../../../hooks/useFocus"
 import YoutubeMetadataRenderer from "../components/YoutubeMetadataRenderer"
 
 

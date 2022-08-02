@@ -1,8 +1,8 @@
 import useWebSocket, { ReadyState } from 'react-use-websocket'
 import { DownloadProtocolMessage, StepWidgetProps } from "../typescriptData"
-import { getDownloadWebsocketUrl } from "../../apiCommunication"
-import { sendNotification } from '../../Components/notification'
-import Loader from '../../Components/Loader'
+import { getDownloadWebsocketUrl } from "../../../apiCommunication"
+import { sendNotification } from '../../../Components/notification'
+import Loader from '../../../Components/Loader'
 import MessageRenderer from '../components/MessageRenderer'
 
 

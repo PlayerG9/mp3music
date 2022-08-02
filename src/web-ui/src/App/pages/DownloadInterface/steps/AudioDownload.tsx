@@ -1,5 +1,5 @@
 import { StepWidgetProps } from "../typescriptData"
-import { getAudioDownloadLink } from "../../apiCommunication"
+import { getAudioDownloadLink } from "../../../apiCommunication"
 import MessageRenderer from "../components/MessageRenderer"
 
 

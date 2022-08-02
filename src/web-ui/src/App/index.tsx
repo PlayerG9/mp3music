@@ -1,15 +1,23 @@
 import './style.scss'
 import './Components/style.scss'
+import { Routes } from 'react-router-dom'
 import { NotificationsDisplay } from './Components/notification'
-import DownloadInterface from './DownloadInterface'
+import { buildRoutes } from './routeManager'
 import ApiWakeUp from './ApiWakeUp'
 
 
+// call pages to let them register themself for the Router
+import './pages/Home'
+
+
 export default function App() {
-	return <div className='app'>
-		<h1>mp3music</h1>
-		<DownloadInterface/>
+	return <>
+		<Routes>
+			{/* not as component because <Routes> only allow <Route> as child */}
+			{buildRoutes()}
+		</Routes>	
+		{/* expluced from .app because they have different purposes */}
 		<NotificationsDisplay/>
 		<ApiWakeUp/>
-	</div>
+	</>
 }

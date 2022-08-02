@@ -1,4 +1,4 @@
-import { VideoMetadata } from "../../apiCommunication/types"
+import { VideoMetadata } from "../../../apiCommunication/types"
 
 
 export default function YoutubeMetadataRenderer(data: VideoMetadata){
