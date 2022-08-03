@@ -1,11 +1,16 @@
 import './style.scss'
 import { registerRoute } from '../../routeManager'
-import { Route } from 'react-router-dom'
+import { Link, Route } from 'react-router-dom'
 
 
 export default function HomePage(){
     return <div className='app'>
         <h1>Hello World</h1>
+        <div className='applications'>
+            <Link to="/download">mp3 download</Link>
+            <Link to="/lyrics">lyrics</Link>
+            <Link to="/mp3edit">mp3 edit</Link>
+        </div>
     </div>
 }
 
