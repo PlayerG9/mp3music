@@ -1,0 +1,26 @@
+.homepage {
+    h1 {
+        text-align: center;
+    }
+
+    .applications {
+        display: flex;
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: stretch;
+        gap: 20px;
+
+        > * {
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 30px;
+            flex-grow: 1;
+            text-align: center;
+        }
+        a {
+            text-decoration: none;
+            color: black;
+        }
+    }
+}
