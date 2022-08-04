@@ -10,6 +10,7 @@ export default function HomePage(){
             <Link to="/download">mp3 download</Link>
             <Link to="/lyrics">lyrics</Link>
             <Link to="/mp3edit">mp3 edit</Link>
+            <Link to="/search">search</Link>
         </div>
     </div>
 }
