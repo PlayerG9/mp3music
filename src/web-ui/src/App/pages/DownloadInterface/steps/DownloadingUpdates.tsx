@@ -1,25 +1,47 @@
 import useWebSocket, { ReadyState } from 'react-use-websocket'
-import { DownloadProtocolMessage, StepWidgetProps } from "../typescriptData"
+import { useNavigate } from 'react-router-dom'
+import { DownloadProtocolMessage } from "../typescriptData"
 import { getDownloadWebsocketUrl } from "../../../apiCommunication"
 import { sendNotification } from '../../../Components/notification'
 import Loader from '../../../Components/Loader'
 import MessageRenderer from '../components/MessageRenderer'
+import { useState } from 'react'
+import { makeParamsWrapper, buildRedirect } from '../utility'
 
 
-export default function DownloadUpdates(props: StepWidgetProps) {
+export default makeParamsWrapper(DownloadUpdates, ["youtubeId", "title", "artist"])
+
+
+interface DUProps {
+    youtubeId: string,
+    title: string,
+    artist: string
+}
+
+
+export function DownloadUpdates(props: DUProps) {
     const websocket = useWebSocket(getDownloadWebsocketUrl, {
         onOpen: onOpen,
         onMessage: onMessage,
         onError: onError,
-        onClose: (event) => {console.log(event); props.nextStep()}
+        onClose: (event) => {
+            console.log(event);
+            navigate(buildRedirect("/download/mp3file", 
+                { fileUid, filename, messages }
+            ))
+        }
     })
+    const navigate = useNavigate()
+    const [fileUid, setFileUid] = useState("")
+    const [filename, setFilename] = useState("")
+    const [messages, setMessages] = useState<DownloadProtocolMessage[]>([])
 
-    function onOpen(event: any){
+    function onOpen(_: any){
         websocket.sendJsonMessage({
-            youtubeId: props.values.youtubeId,
+            youtubeId: props.youtubeId,
             metadata: {
-                title: props.values.title,
-                artist: props.values.artist
+                title: props.title,
+                artist: props.artist
             }
         })
     }
@@ -27,24 +49,23 @@ export default function DownloadUpdates(props: StepWidgetProps) {
     function onMessage(event: any){
         const data: DownloadProtocolMessage = JSON.parse(event.data)
         if(data.final){
-            props.handleInput("fileUid", data.final.uid)
-            props.handleInput("filename", data.final.filename)
+            setFileUid(data.final.uid)
+            setFilename(data.final.filename)
         }else{
-            props.handleInput("messages", (prevValues) => {
-                const messages = prevValues.messages
-                const lastIndex = messages.length - 1
-                if(data.progress && messages[lastIndex]?.progress){
-                    messages[lastIndex] = data  // update last
-                    return messages
+            setMessages((prevMessages) => {
+                const lastIndex = prevMessages.length - 1
+                if(data.progress && prevMessages[lastIndex]?.progress){
+                    prevMessages[lastIndex] = data  // update last
+                    return prevMessages
                 }else{
                     console.log(data)
-                    return messages.concat(data)
+                    return prevMessages.concat(data)
                 }
             })
         }
     }
 
-    function onError(event: any){
+    function onError(){
         sendNotification("Error occured")
     }
 
@@ -53,7 +74,7 @@ export default function DownloadUpdates(props: StepWidgetProps) {
             return <Loader/>
         case ReadyState.OPEN:
             return <div>
-                {props.values.messages.map((message, key) => <MessageRenderer key={key} {...message}/>)}
+                {messages.map((message, key) => <MessageRenderer key={key} {...message}/>)}
             </div>
         default:
             return <div>

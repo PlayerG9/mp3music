@@ -1,15 +1,17 @@
+import { useState } from "react"
 import { useQuery } from "react-query"
+import { Link } from "react-router-dom"
 import { fetchVideoMetadata } from "../../../apiCommunication"
 import { sendNotification } from '../../../Components/notification'
-import { StepWidgetProps } from "../typescriptData"
 import useFocus from "../../../hooks/useFocus"
 import YoutubeMetadataRenderer from "../components/YoutubeMetadataRenderer"
+import { buildRedirect } from "../utility"
 
 
-export default function YoutubeIdInput(props: StepWidgetProps) {
-    const youtubeId = props.values.youtubeId
-    const isValidId = (youtubeId !== undefined && youtubeId.length > 10)
-
+export default function YoutubeIdInput() {
+    const [youtubeId, setYoutubeId] = useState("")
+    
+    const isValidId = (youtubeId !== null && youtubeId.length > 10)
     const apiCall = useQuery(
         ['video-metadata'],
         () => fetchVideoMetadata(youtubeId ?? ""),
@@ -22,25 +24,24 @@ export default function YoutubeIdInput(props: StepWidgetProps) {
     useFocus(() => {
         if((apiCall.isError || !isValidId) && navigator.clipboard.readText){
             navigator.clipboard.readText()
-                .then((text) => props.handleInput("youtubeId", text))
-                .catch(() => sendNotification("failed to load youtubeId"))
+                .then((text) => setYoutubeId(text))
+                .catch(() => sendNotification("failed to load youtubeId from clipboard"))
         }
     })
 
-    function nextStep(){
-        if(!apiCall.data){
-            sendNotification("Invalid Youtube Id")
-            return
-        }else{
-            props.handleInput("title", apiCall.data.title)
-            props.handleInput("artist", apiCall.data.artist)
-            props.nextStep()
-        }
+    const urlParams = {
+        youtubeId: apiCall.data?.video_id,
+        title: apiCall.data?.title,
+        artist: apiCall.data?.artist
     }
 
     return <div className="youtubeid-input">
-        <input value={props.values.youtubeId ?? ""} onInput={props.handleInput("youtubeId")} autoFocus={true} />
-        <button onClick={nextStep} disabled={!apiCall.isSuccess}>Select</button>
+        <input value={youtubeId ?? ""} onInput={(e: any) => setYoutubeId(e.target.value)} autoFocus={true} />
+        {apiCall.isSuccess ?
+            <Link to={buildRedirect("/download/datainput", urlParams)}>Select</Link>
+            :
+            <span>Select</span>
+        } 
         {apiCall.isLoading && <p>Verifying...</p>}
         {apiCall.isError && <p>Invalid</p>}
         {apiCall.isSuccess && <YoutubeMetadataRenderer {...apiCall.data} />}

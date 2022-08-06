@@ -3,22 +3,22 @@
         padding: 6px 15px; 
         border-radius: 10px;
         margin: 4px;
-        background-color: rgb(255, 255, 255);
+        background-color: rgba(255, 255, 255, 0.5);
         border: 2px solid rgb(230, 230, 230);
     }
 
     .info {
-        background-color: rgb(233, 233, 233);
+        background-color: rgba(233, 233, 233, 0.5);
         border: 2px solid rgb(190, 190, 190);
     }
 
     .warning {
-        background-color: rgb(255, 210, 0);
+        background-color: rgba(255, 210, 0, 0.5);
         border: 2px solid rgb(190, 190, 0);
     }
 
     .error {
-        background-color: rgb(252, 65, 65);
+        background-color: rgba(252, 65, 65, 0.5);
         border: 2px solid rgb(190, 0, 0);
     }
 }

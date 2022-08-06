@@ -1,82 +1,22 @@
-import './style.scss'
-import './components/styles.scss'
-import React from 'react'
-import { ValueProps } from './typescriptData'
-import YoutubeIdInput from './steps/YoutubeIdInput'
-import MetadataInput from './steps/MetadataInput'
-import DownloadUpdates from './steps/DownloadingUpdates'
-import AudioDownload from './steps/AudioDownload'
+import './components/style.scss'
+import { Route, Outlet } from "react-router-dom"
+import { registerRoute } from "../../routeManager"
+import AudioDownload from "./steps/AudioDownload"
+import DownloadUpdates from "./steps/DownloadingUpdates"
+import MetadataInput from "./steps/MetadataInput"
+import YoutubeIdInput from "./steps/YoutubeIdInput"
 
 
-export const STATE2WIDGET = [
-    YoutubeIdInput,
-    MetadataInput,
-    DownloadUpdates,
-    AudioDownload
-]
-
-
-interface StepsProps extends ValueProps {
-    currentStep: number
+function DownloadInterfaceElement(){
+    return <div className="app download-interface">
+        <Outlet/>
+    </div>
 }
 
 
-export default class DownloadInterface extends React.Component {
-    state: StepsProps
-
-    constructor(props: any){
-        super(props)
-        this.state = {
-            currentStep: 0,
-            messages: []
-        }
-        
-        this.nextStep = this.nextStep.bind(this)
-        this.handleInput = this.handleInput.bind(this)
-    }
-
-    render(){
-        const Widget = STATE2WIDGET[this.state.currentStep]
-
-        if(Widget === undefined){
-            return <div>
-                Invalid step is displayed
-            </div>
-        }
-
-        const values: ValueProps = this.state
-
-        return <div className='download-interface'>
-            <Widget values={values} handleInput={this.handleInput} nextStep={this.nextStep}/>
-        </div>
-    }
-
-    nextStep(){
-        this.setState({
-            currentStep: this.state.currentStep + 1
-        })
-    }
-
-    handleInput(keyWord: string, value?: string | ((prevState: ValueProps) => object)) {
-        const setState = this.setState.bind(this)
-
-        if(value){
-            if(typeof value === 'function'){
-                setState((prev: ValueProps) => ({
-                    [keyWord]: value(prev)
-                }))
-            }else{
-                setState({
-                    [keyWord]: value
-                })
-            }
-        }
-        return function(event: any){
-            if(event.target?.value !== undefined){
-                setState({
-                    [keyWord]: event.target.value
-                })
-            }
-        }
-    }
-}
+registerRoute(<Route key="download" path="download" element={<DownloadInterfaceElement/>}>
+    <Route index element={<YoutubeIdInput/>}/>
+    <Route path="datainput" element={<MetadataInput/>}/>
+    <Route path="updates" element={<DownloadUpdates/>}/>
+    <Route path="mp3file" element={<AudioDownload/>}/>
+</Route>)

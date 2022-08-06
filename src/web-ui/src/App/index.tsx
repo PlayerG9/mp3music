@@ -8,6 +8,7 @@ import ApiWakeUp from './ApiWakeUp'
 
 // call pages to let them register themself for the Router
 import './pages/Home'
+import './pages/DownloadInterface'
 
 
 export default function App() {
