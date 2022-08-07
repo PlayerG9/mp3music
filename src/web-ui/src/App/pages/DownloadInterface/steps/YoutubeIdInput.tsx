@@ -42,8 +42,8 @@ export default function YoutubeIdInput() {
             :
             <span>Select</span>
         } 
-        {apiCall.isLoading && <p>Verifying...</p>}
-        {apiCall.isError && <p>Invalid</p>}
+        {apiCall.isLoading && <span>Verifying...</span>}
+        {apiCall.isError && <span>Invalid</span>}
         {apiCall.isSuccess && <YoutubeMetadataRenderer {...apiCall.data} />}
     </div>
 }
