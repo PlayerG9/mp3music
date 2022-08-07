@@ -1,7 +1,7 @@
-import { useState } from "react"
-import { useQuery } from "react-query"
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { fetchVideoMetadata } from "../../../apiCommunication"
+import { SERVERADDRESS } from "../../../apiCommunication"
+import { VideoMetadata } from '../../../apiCommunication/types'
 import { sendNotification } from '../../../Components/notification'
 import useFocus from "../../../hooks/useFocus"
 import YoutubeMetadataRenderer from "../components/YoutubeMetadataRenderer"
@@ -10,40 +10,56 @@ import { buildRedirect } from "../utility"
 
 export default function YoutubeIdInput() {
     const [youtubeId, setYoutubeId] = useState("")
+    const [videoFound, setVideoFound] = useState(false)
+    const [response, setResponse] = useState<VideoMetadata | undefined>()
     
     const isValidId = (youtubeId !== null && youtubeId.length > 10)
-    const apiCall = useQuery(
-        ['video-metadata'],
-        () => fetchVideoMetadata(youtubeId ?? ""),
-        {
-            refetchInterval: 1,
-            enabled: isValidId
+
+    useEffect(() => {
+        const timeoutId = setTimeout(makeRequest, 300)
+        return () => clearTimeout(timeoutId)
+    }, [youtubeId])
+
+    async function makeRequest(){
+        if(!isValidId){
+            setVideoFound(false)
+            return
         }
-    )
+
+        const url = new URL('/api/metadata/v1', `https://${SERVERADDRESS}`)
+        url.searchParams.append("youtubeId", youtubeId)
+        const response = await fetch(url)
+        if(!response.ok){
+            setVideoFound(false)
+            return
+        }
+        const data = await response.json()
+
+        setResponse(data)
+        setVideoFound(true)
+    }
 
     useFocus(() => {
-        if((apiCall.isError || !isValidId) && navigator.clipboard.readText){
+        if(!videoFound && navigator.clipboard.readText){
             navigator.clipboard.readText()
                 .then((text) => setYoutubeId(text))
-                .catch(() => sendNotification("failed to load youtubeId from clipboard"))
+                .catch(() => sendNotification("failed to load Youtube-ID from clipboard"))
         }
     })
 
     const urlParams = {
-        youtubeId: apiCall.data?.video_id,
-        title: apiCall.data?.title,
-        artist: apiCall.data?.artist
+        youtubeId: response?.video_id,
+        title: response?.title,
+        artist: response?.artist
     }
 
     return <div className="youtubeid-input">
         <input value={youtubeId ?? ""} onInput={(e: any) => setYoutubeId(e.target.value)} autoFocus={true} />
-        {apiCall.isSuccess ?
+        {response !== undefined ?
             <Link to={buildRedirect("/download/datainput", urlParams)}>Select</Link>
             :
             <span>Select</span>
-        } 
-        {apiCall.isLoading && <span>Verifying...</span>}
-        {apiCall.isError && <span>Invalid</span>}
-        {apiCall.isSuccess && <YoutubeMetadataRenderer {...apiCall.data} />}
+        }
+        {response !== undefined && <YoutubeMetadataRenderer {...response} />}
     </div>
 }
