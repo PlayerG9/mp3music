@@ -16,28 +16,27 @@ export default function YoutubeIdInput() {
     const isValidId = (youtubeId !== null && youtubeId.length > 10)
 
     useEffect(() => {
-        const timeoutId = setTimeout(makeRequest, 300)
+        const timeoutId = setTimeout(
+            async () => {
+                if(!isValidId){
+                    setVideoFound(false)
+                    return
+                }
+        
+                const url = new URL('/api/metadata/v1', `https://${SERVERADDRESS}`)
+                url.searchParams.append("youtubeId", youtubeId)
+                const response = await fetch(url)
+                if(!response.ok){
+                    setVideoFound(false)
+                    return
+                }
+                const data = await response.json()
+        
+                setResponse(data)
+                setVideoFound(true)
+            }, 300)
         return () => clearTimeout(timeoutId)
-    }, [youtubeId])
-
-    async function makeRequest(){
-        if(!isValidId){
-            setVideoFound(false)
-            return
-        }
-
-        const url = new URL('/api/metadata/v1', `https://${SERVERADDRESS}`)
-        url.searchParams.append("youtubeId", youtubeId)
-        const response = await fetch(url)
-        if(!response.ok){
-            setVideoFound(false)
-            return
-        }
-        const data = await response.json()
-
-        setResponse(data)
-        setVideoFound(true)
-    }
+    }, [youtubeId, isValidId])
 
     useFocus(() => {
         if(!videoFound && navigator.clipboard.readText){
