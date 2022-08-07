@@ -75,14 +75,27 @@
 
 .app-header {
     width: 100%;
-    padding: 10px;
+    padding: 4px;
     box-sizing: border-box;
     background-color: rgba(0, 0, 0, 0.3);
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 
+    > * {
+        display: inline-block;
+        padding: 0px;
+        margin: 0px;
+    }
+
     .homepage-link {
-        font-size: 2em;
         text-decoration: none;
+        color: black;
+        vertical-align: middle;
+        height: 2em;
+
+        > * {
+            display: inline;
+            height: 100%;
+        }
     }
 }
