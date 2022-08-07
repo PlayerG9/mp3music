@@ -1,32 +1,25 @@
-import React from "react"
-import { useSearchParams } from "react-router-dom"
+import useUrlData from "../../hooks/useUrlData"
 
 
 export function buildRedirect(path: string, data: object){
     const search = new URLSearchParams()
-    for(let [key, value] of Object.entries(data)){
-        search.append(key, JSON.stringify(value))
-    }
+    search.append('data', JSON.stringify(data))
     return {
         pathname: path,
         search: `?${search.toString()}`
     }
 }
 
-export function makeParamsWrapper(component: any, keys: string[]){
+export function makeParamsWrapper(Component: any, keys: string[]){
     
     return function DownloadUpdatesWrapper(){
-        const searchParams = useSearchParams()[0]
+        const urlData = useUrlData()
         const props: any = {}
         for(let key of keys){
-            let value = searchParams.get(key)
+            let value = urlData[key]
             if(value === null) return <>Missing Param: {key}</>
-            props[key] = JSON.parse(value)
+            props[key] = value
         }
-        return React.createElement(
-            component,
-            props
-
-        )
+        return <Component {...props}/>
     }
 }

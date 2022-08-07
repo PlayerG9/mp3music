@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useQuery } from 'react-query'
-import { useSearchParams, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { fetchVideoMetadata } from '../../../apiCommunication'
 import Loader from '../../../Components/Loader'
+import useUrlData from '../../../hooks/useUrlData'
 import YoutubeMetadataRenderer from '../components/YoutubeMetadataRenderer'
 import { buildRedirect, makeParamsWrapper } from '../utility'
 
@@ -19,6 +20,7 @@ interface metadataInputProps {
 
 export function MetadataInput(props: metadataInputProps) {
     const { youtubeId } = props
+    console.log([youtubeId])
     const [title, setTitle] = useState(props.title)
     const [artist, setArtist] = useState(props.artist)
 
@@ -47,18 +49,18 @@ export function MetadataInput(props: metadataInputProps) {
         </table>
             <div className='input'>
             </div>
-        <Link to={buildRedirect("/download/updates", urlParams)}>Start Download</Link>
+        <Link className='next-link' to={buildRedirect("/download/updates", urlParams)}>Start Download</Link>
         <ShowYoutubeMetadata/>
     </div>
 }
 
 
 function ShowYoutubeMetadata(){
-    const searchParams = useSearchParams()[0]
-    const youtubeId = searchParams.get("youtubeId")
+    const urlData = useUrlData<{youtubeId: string}>()
+    const youtubeId = urlData.youtubeId
     const apiCall = useQuery(
         ['video-metadata'],
-        () => fetchVideoMetadata(youtubeId ?? ""),
+        () => fetchVideoMetadata(youtubeId),
         {enabled: !!youtubeId}
     )
 

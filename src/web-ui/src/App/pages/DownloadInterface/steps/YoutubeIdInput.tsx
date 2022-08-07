@@ -55,10 +55,8 @@ export default function YoutubeIdInput() {
 
     return <div className="youtubeid-input">
         <input value={youtubeId ?? ""} onInput={(e: any) => setYoutubeId(e.target.value)} autoFocus={true} />
-        {response !== undefined ?
-            <Link to={buildRedirect("/download/datainput", urlParams)}>Select</Link>
-            :
-            <span>Select</span>
+        {response !== undefined &&
+            <Link className="next-link" to={buildRedirect("/download/datainput", urlParams)}>Select</Link>
         }
         {response !== undefined && <YoutubeMetadataRenderer {...response} />}
     </div>
