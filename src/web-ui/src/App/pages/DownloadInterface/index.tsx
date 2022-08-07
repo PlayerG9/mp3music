@@ -1,3 +1,4 @@
+import './style.scss'
 import './components/style.scss'
 import { Route, Outlet } from "react-router-dom"
 import { registerRoute } from "../../routeManager"

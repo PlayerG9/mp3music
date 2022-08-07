@@ -1,7 +1,6 @@
 .download-interface {
-    max-width: 100%!important;
 
-
+    // displays the metadata of a video
     .video-metadata {
         display: block;
         max-width: 100%;
@@ -59,6 +58,36 @@
                     padding: 0;
                 }
             }
+        }
+    }
+
+    > .audio-download {
+        input {
+            box-sizing: border-box;
+            display: block;
+            margin: 10px 5px;
+            width: calc(100% - 10px);
+        }
+
+        .download-link {
+            width: fit-content;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            border: 1px solid black;
+            border-radius: 4px;
+            margin: 5px auto;
+            padding: 5px 15px;
+            background-color: rgba(0, 0, 0, 0.1);
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        .seperator {
+            display: block;
+            height: 100px;
         }
     }
 }

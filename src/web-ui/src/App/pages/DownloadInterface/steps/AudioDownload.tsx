@@ -21,11 +21,10 @@ export function AudioDownload(props: audioDownloadProps) {
 
     const downloadUrl = getAudioDownloadLink(fileUid, filename)
     
-    return <div>
+    return <div className="audio-download">
         <input value={filename} onInput={(e: any) => setFilename(e.target.value)} autoFocus={true} />
-        <p>
-            <a href={downloadUrl} target='_blank' rel="noreferrer">Download Audio</a>
-        </p>
+        <a className="download-link" href={downloadUrl} target='_blank' rel="noreferrer">Download Audio</a>
+        <div className="seperator"/>
         <div>
             {messages.map((message, key) => <MessageRenderer key={key} {...message}/>)}
         </div>
