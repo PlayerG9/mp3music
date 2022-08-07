@@ -29,7 +29,7 @@ const makeGet = (url: string, body: object) => makeRequest("GET", url, body)
 
 
 export async function fetchVideoMetadata(youtubeId: string): Promise<VideoMetadata> {
-    const url = `https://${SERVERADDRESS}/api/metadata/v1`
+    const url = `https://${SERVERADDRESS}/api/metadata`
     const response = await makeGet(url, {
         youtubeId: youtubeId
     })

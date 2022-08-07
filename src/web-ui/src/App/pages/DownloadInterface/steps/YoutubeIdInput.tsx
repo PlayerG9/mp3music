@@ -23,7 +23,7 @@ export default function YoutubeIdInput() {
                     return
                 }
         
-                const url = new URL('/api/metadata/v1', `https://${SERVERADDRESS}`)
+                const url = new URL('/api/metadata', `https://${SERVERADDRESS}`)
                 url.searchParams.append("youtubeId", youtubeId)
                 const response = await fetch(url)
                 if(!response.ok){
