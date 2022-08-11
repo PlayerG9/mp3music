@@ -1,6 +1,7 @@
 import { VideoMetadata } from "./types"
 
-export const isProduction = process.env.NODE_ENV === 'production'
+export const forceHeroku = true
+export const isProduction = forceHeroku || process.env.NODE_ENV === 'production'
 export const SERVERADDRESS = isProduction ? 
     'mp3music-backend.herokuapp.com' : '0.0.0.0:5000'
 export const HTTPS = isProduction ? 'https' : "http"
