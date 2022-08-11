@@ -1,10 +1,14 @@
 import { VideoMetadata } from "./types"
 
-export const SERVERADDRESS = 'mp3music-backend.herokuapp.com'
+export const isProduction = process.env.NODE_ENV === 'production'
+export const SERVERADDRESS = isProduction ? 
+    'mp3music-backend.herokuapp.com' : '0.0.0.0:5000'
+export const HTTPS = isProduction ? 'https' : "http"
+export const WSS = isProduction ? 'wss' : 'ws'
 
 
 export function getAudioDownloadLink(uid: string, filename?: string){
-    const url = new URL(`https://${SERVERADDRESS}/api/mp3file/${uid}`)
+    const url = new URL(`${HTTPS}://${SERVERADDRESS}/api/mp3file/${uid}`)
     if(filename){
         url.searchParams.append("filename", filename)
     }
@@ -12,7 +16,7 @@ export function getAudioDownloadLink(uid: string, filename?: string){
 }
 
 export function getDownloadWebsocketUrl(){
-    return `wss://${SERVERADDRESS}/api/download`
+    return `${WSS}://${SERVERADDRESS}/api/download`
 }
 
 function makeRequest(method: string, endpoint: string, data: object){
@@ -29,7 +33,7 @@ const makeGet = (url: string, body: object) => makeRequest("GET", url, body)
 
 
 export async function fetchVideoMetadata(youtubeId: string): Promise<VideoMetadata> {
-    const url = `https://${SERVERADDRESS}/api/metadata`
+    const url = `${HTTPS}://${SERVERADDRESS}/api/metadata`
     const response = await makeGet(url, {
         youtubeId: youtubeId
     })
@@ -44,7 +48,7 @@ export async function fetchVideoMetadata(youtubeId: string): Promise<VideoMetada
 
 
 export async function helloWorld() {
-    const url = `https://${SERVERADDRESS}/api/`
+    const url = `${HTTPS}://${SERVERADDRESS}/api/`
     const response = await makeGet(url, {})
 
     if(!response.ok){
