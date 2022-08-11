@@ -16,7 +16,7 @@ export function makeUrlDataWrapper(Component: any, keys: string[]){
         const urlData = useUrlData()
         for(let key of keys){
             if(urlData[key] === undefined){
-                throw Error(`Missing key ${key}`)
+                throw Error(`Missing key: '${key}'`)
             }
         }
         return <Component {...urlData}/>
