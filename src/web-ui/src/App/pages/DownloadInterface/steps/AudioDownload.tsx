@@ -17,10 +17,10 @@ interface audioDownloadProps {
 
 
 export function AudioDownload(props: audioDownloadProps) {
-    const { failed } = props
+    const hasDownload = props.fileUid && !props.failed
     
     return <div className="audio-download">
-        {!failed ? 
+        {hasDownload ? 
             <DownloadRenderer {...props}/>
             :
             <p>Unable to download audio</p>
