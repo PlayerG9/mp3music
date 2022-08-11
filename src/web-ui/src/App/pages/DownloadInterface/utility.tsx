@@ -10,16 +10,15 @@ export function buildRedirect(path: string, data: object){
     }
 }
 
-export function makeParamsWrapper(Component: any, keys: string[]){
+export function makeUrlDataWrapper(Component: any, keys: string[]){
     
     return function DownloadUpdatesWrapper(){
         const urlData = useUrlData()
-        const props: any = {}
         for(let key of keys){
-            let value = urlData[key]
-            if(value === null) return <>Missing Param: {key}</>
-            props[key] = value
+            if(urlData[key] === undefined){
+                throw Error(`Missing key ${key}`)
+            }
         }
-        return <Component {...props}/>
+        return <Component {...urlData}/>
     }
 }

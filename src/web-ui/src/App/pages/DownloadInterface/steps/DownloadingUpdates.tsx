@@ -6,10 +6,10 @@ import { sendNotification } from '../../../Components/notification'
 import Loader from '../../../Components/Loader'
 import MessageRenderer from '../components/MessageRenderer'
 import { useState } from 'react'
-import { makeParamsWrapper, buildRedirect } from '../utility'
+import { makeUrlDataWrapper, buildRedirect } from '../utility'
 
 
-export default makeParamsWrapper(DownloadUpdates, ["youtubeId", "title", "artist"])
+export default makeUrlDataWrapper(DownloadUpdates, ["youtubeId", "title", "artist"])
 
 
 interface DUProps {
@@ -27,7 +27,7 @@ export function DownloadUpdates(props: DUProps) {
         onClose: (event) => {
             console.log(event);
             navigate(buildRedirect("/download/mp3file", 
-                { fileUid, filename, messages }
+                { fileUid, filename, messages, failed: !event.wasClean }
             ))
         }
     })

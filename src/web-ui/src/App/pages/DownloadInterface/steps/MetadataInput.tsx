@@ -5,10 +5,10 @@ import { fetchVideoMetadata } from '../../../apiCommunication'
 import Loader from '../../../Components/Loader'
 import useUrlData from '../../../hooks/useUrlData'
 import YoutubeMetadataRenderer from '../components/YoutubeMetadataRenderer'
-import { buildRedirect, makeParamsWrapper } from '../utility'
+import { buildRedirect, makeUrlDataWrapper } from '../utility'
 
 
-export default makeParamsWrapper(MetadataInput, ["youtubeId", "title", "artist"])
+export default makeUrlDataWrapper(MetadataInput, ["youtubeId", "title", "artist"])
 
 
 interface metadataInputProps {
