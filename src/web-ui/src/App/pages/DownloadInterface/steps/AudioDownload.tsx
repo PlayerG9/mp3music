@@ -18,7 +18,6 @@ interface audioDownloadProps {
 
 export function AudioDownload(props: audioDownloadProps) {
     const { failed } = props
-    console.table(props)
     
     return <div className="audio-download">
         {!failed ? 
