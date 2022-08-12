@@ -55,6 +55,39 @@
             margin: 0 auto;
         }
 
+        .recommended {
+            a {
+                display: block;
+                margin: 5px;
+                text-decoration: none;
+                color: black;
+                padding: 15px;
+                border: 1px solid black;
+                border-radius: 5px;
+                
+                p {
+                    margin: 0px;
+                    text-align: center;
+                }
+
+                .title {
+                    font-weight: bold;
+                }
+
+                .artist {
+                    color: gray;
+                    font-size: smaller;
+                }
+            }
+        }
+
+        .manuel-input {
+            border: 1px solid black;
+            border-radius: 5px;
+            margin: 5px;
+            padding: 5px;
+        }
+
         .input-fields {
             width: 100%;
 

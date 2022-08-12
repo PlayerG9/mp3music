@@ -19,10 +19,44 @@ interface metadataInputProps {
 
 
 export function MetadataInput(props: metadataInputProps) {
+    return <div className='metadata-input'>
+        <RecommendedOptions {...props}/>
+        <ManuelInput {...props}/>
+        <ShowYoutubeMetadata/>
+    </div>
+}
+
+
+function RecommendedOptions(props: metadataInputProps){
+    const {a, b} = findTitleOptions(props.title, props.artist)
+    const link1 = buildRedirect("/download/updates", {
+        youtubeId: props.youtubeId,
+        title: a,
+        artist: b
+    })
+    const link2 = buildRedirect("/download/updates", {
+        youtubeId: props.youtubeId,
+        title: b,
+        artist: a
+    })
+    return <div className='recommended'>
+        <Link to={link1}>
+            <p className='title'>{a}</p>
+            <p className='artist'>{b}</p>
+        </Link>
+        <Link to={link2}>
+            <p className='title'>{b}</p>
+            <p className='artist'>{a}</p>
+        </Link>
+    </div>
+}
+
+
+function ManuelInput(props: metadataInputProps){
     const { youtubeId } = props
-    console.log([youtubeId])
-    const [title, setTitle] = useState(props.title)
-    const [artist, setArtist] = useState(props.artist)
+        
+    const [title, setTitle] = useState("")
+    const [artist, setArtist] = useState("")
 
     const urlParams = {
         youtubeId: youtubeId,
@@ -30,7 +64,7 @@ export function MetadataInput(props: metadataInputProps) {
         artist: artist
     }
 
-    return <div className='metadata-input'>
+    return <div className='manuel-input'>
         <table className='input-fields'>
             <tbody>
                 <tr>
@@ -50,7 +84,6 @@ export function MetadataInput(props: metadataInputProps) {
             <div className='input'>
             </div>
         <Link className='next-link' to={buildRedirect("/download/updates", urlParams)}>Start Download</Link>
-        <ShowYoutubeMetadata/>
     </div>
 }
 
@@ -72,4 +105,40 @@ function ShowYoutubeMetadata(){
     }
 
     return <YoutubeMetadataRenderer {...apiCall.data} />
+}
+
+
+function findTitleOptions(text: string, defaultValue: string) {
+    text = removeBrackets(text)
+    
+    var [left, sep, right] = partition(text, '-')
+
+    if(!sep){
+        left = text
+        right = defaultValue
+    }
+    
+    left = removeNonUnicode(left ?? "")
+    right = removeNonUnicode(right ?? "")
+    return {a: left, b: right}
+}
+
+
+function partition(text: string, sep: string){
+    const index = text.indexOf(sep)
+    if(index === -1){
+        return [text, null, null]
+    }
+    return [text.slice(0, index), sep, text.slice(index + 1)]
+}
+
+
+function removeBrackets(text: string): string {
+    const regex = /\(.+\)|\[.+]/g
+    return text.replaceAll(regex, "").trim()
+}
+
+function removeNonUnicode(text: string): string {
+    const regex = /[^\w\- '!?]/g
+    return text.replaceAll(regex, "").trim()
 }
