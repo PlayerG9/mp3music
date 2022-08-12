@@ -20,7 +20,6 @@ export default function YoutubeIdInput() {
     useEffect(() => {
         const timeoutId = setTimeout(
             async () => {
-                console.log("Hey")
                 setLoading(true)
                 try{
                     if(!isValidId){
@@ -40,7 +39,6 @@ export default function YoutubeIdInput() {
                     setResponse(data)
                     setVideoFound(true)
                 }finally{
-                    console.log("Ho")
                     setLoading(false)
                 }
             }, 300)
