@@ -1,4 +1,6 @@
 import './style.scss'
+import { Route } from 'react-router-dom'
+import { registerRoute } from '../../routeManager'
 
 
 export default function PageNotFound(){
@@ -6,3 +8,7 @@ export default function PageNotFound(){
         <h1>Page not Found</h1>
     </div>
 }
+
+registerRoute(
+	<Route key="not-found" path="*" element={<PageNotFound/>}/>
+)
