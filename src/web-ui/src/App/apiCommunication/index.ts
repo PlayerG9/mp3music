@@ -8,6 +8,22 @@ export const HTTPS = isProduction ? 'https' : "http"
 export const WSS = isProduction ? 'wss' : 'ws'
 
 
+export function getDownloadWebsocketUrl(){
+    return `${WSS}://${SERVERADDRESS}/api/download`
+}
+
+
+export function buildUrl(endpoint: string, data?: object): string {
+    const url = new URL(endpoint, `${HTTPS}://${SERVERADDRESS}`)
+    if(data){
+        for(let [key, value] of Object.entries(data)){
+            url.searchParams.append(key, value)
+        }
+    }
+    return url.toString()
+}
+
+
 export function getAudioDownloadLink(uid: string, filename?: string){
     const url = new URL(`${HTTPS}://${SERVERADDRESS}/api/mp3file/${uid}`)
     if(filename){
@@ -16,15 +32,9 @@ export function getAudioDownloadLink(uid: string, filename?: string){
     return url.toString()
 }
 
-export function getDownloadWebsocketUrl(){
-    return `${WSS}://${SERVERADDRESS}/api/download`
-}
 
 function makeRequest(method: string, endpoint: string, data: object){
-    const url = new URL(endpoint)
-    for(let [key, value] of Object.entries(data)){
-        url.searchParams.append(key, value)
-    }
+    const url = buildUrl(endpoint, data)
     return fetch(url, {
         method: method
     })
