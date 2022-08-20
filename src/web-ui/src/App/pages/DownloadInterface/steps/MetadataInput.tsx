@@ -40,13 +40,14 @@ function RecommendedOptions(props: metadataInputProps){
         artist: a
     })
     return <div className='recommended'>
-        <Link to={link1}>
-            <p className='title'>{a}</p>
-            <p className='artist'>{b}</p>
-        </Link>
+        {/* link2 is more likeable */}
         <Link to={link2}>
             <p className='title'>{b}</p>
             <p className='artist'>{a}</p>
+        </Link>
+        <Link to={link1}>
+            <p className='title'>{a}</p>
+            <p className='artist'>{b}</p>
         </Link>
     </div>
 }
