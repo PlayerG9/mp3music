@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { HTTPS, SERVERADDRESS } from "../../../apiCommunication"
 import { VideoMetadata } from '../../../apiCommunication/types'
 import Loader from "../../../Components/Loader"
@@ -14,6 +14,7 @@ export default function YoutubeIdInput() {
     const [videoFound, setVideoFound] = useState(false)
     const [response, setResponse] = useState<VideoMetadata | undefined>()
     const [isLoading, setLoading] = useState(false)
+    const navigate = useNavigate()
     
     const isValidId = (youtubeId !== null && youtubeId.length > 10)
 
@@ -54,17 +55,28 @@ export default function YoutubeIdInput() {
         }
     })
 
+    function onInput(event: any){
+        setYoutubeId(event.target.value)
+    }
+
+    function onKeyDown(event: any){
+        if(event.key === 'Enter' && response !== undefined){
+            navigate(linkTarget)
+        }
+    }
+
     const urlParams = {
         youtubeId: response?.video_id,
         title: response?.title,
         artist: response?.artist
     }
+    const linkTarget = buildRedirect("/download/datainput", urlParams)
 
     return <div className="youtubeid-input">
-        <input value={youtubeId ?? ""} onInput={(e: any) => setYoutubeId(e.target.value)} autoFocus={true} />
+        <input value={youtubeId ?? ""} onInput={onInput} onKeyDown={onKeyDown} autoFocus />
         {isLoading && <Loader/>}
         {response !== undefined &&
-            <Link className="next-link" to={buildRedirect("/download/datainput", urlParams)}>Select</Link>
+            <Link className="next-link" to={linkTarget}>Select</Link>
         }
         {response !== undefined && <YoutubeMetadataRenderer {...response} />}
     </div>
