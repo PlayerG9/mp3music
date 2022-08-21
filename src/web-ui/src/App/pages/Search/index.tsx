@@ -17,12 +17,6 @@ export default function Search(){
         setSearchParams({query: event.target.value})
     }
 
-    function onKeyDown(event: any){
-        if(event.key === 'Enter' && !isLoading){
-            doSearch()
-        }
-    }
-
     useEffect(() => {
         if(query.length <= 4) return
 
@@ -49,13 +43,9 @@ export default function Search(){
             .finally(() => setLoading(false))
     }
 
-    // if(query.length >= 4 && !results.length && !isLoading){
-    //     doSearch()
-    // }
-
     return <div className='search app'>
         <div className='query-form'>
-            <input onChange={onChange} onKeyDown={onKeyDown} value={query} autoFocus/>
+            <input onChange={onChange} value={query} autoFocus/>
         </div>
         <div className='seperator'/>
         <div className='results'>
