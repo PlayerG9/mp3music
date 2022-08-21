@@ -19,29 +19,28 @@ export default function Search(){
 
     useEffect(() => {
         if(query.length <= 4) return
-
-        const timeoutId = setTimeout(() => doSearch(), 1000)
-        return () => clearTimeout(timeoutId)
-    }, [query])
-
-    function doSearch(){
-        console.log("make Search")
-        if(isLoading) return
-
-        setLoading(true)
-        const url = buildUrl('/api/search', {
-            query: query,
-            limit: 12
-        })
-        fetch(url)
-            .then((response) => {
-                response.json().then((data: {result: VideoSearchItem[]}) =>
-                    setResults(data.result)
-                )
+        
+        const timeoutId = setTimeout(() => {
+            if(isLoading) return
+            console.log("make Search")
+            setLoading(true)
+            const url = buildUrl('/api/search', {
+                query: query,
+                limit: 12
             })
-            .catch(() => setResults([]))
-            .finally(() => setLoading(false))
-    }
+            fetch(url)
+                .then((response) => {
+                    response.json().then((data: {result: VideoSearchItem[]}) =>
+                        setResults(data.result)
+                    )
+                })
+                .catch(() => setResults([]))
+                .finally(() => setLoading(false))
+        }, 1000)
+        return () => clearTimeout(timeoutId)
+        // ignore that typescript wants to include isLoading
+        // eslint-disable-next-line
+    }, [query])
 
     return <div className='search app'>
         <div className='query-form'>
