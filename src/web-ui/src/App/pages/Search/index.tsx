@@ -30,8 +30,8 @@ export default function Search(){
             })
             fetch(url)
                 .then((response) => {
-                    response.json().then((data: {result: VideoSearchItem[]}) =>
-                        setResults(data.result)
+                    response.json().then((data: VideoSearchItem[]) =>
+                        setResults(data)
                     )
                 })
                 .catch(() => setResults([]))
@@ -57,6 +57,9 @@ export default function Search(){
 
 
 export function ResultItem(props: VideoSearchItem){
+    if(!props.channel){
+        console.log(props)
+    }
     const target = buildRedirect('/download/datainput', {
         youtubeId: props.id,
         title: props.title,
